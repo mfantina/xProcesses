@@ -15,7 +15,7 @@ from datetime import datetime
 from functools import partial
 
 numberOfParametersCombinations = 1
-numberOfThreads = 1
+numberOfThreads = 222
 numberOfRounds = 1
 
 def runRound(par, parComb, parCount, numberOfThreads, round, broadcast, messenger, islandSizes, percentageOfBestIndividualsForMigrationAllIslands, taskAddition, sampledLog, fullLog, alphabet, islandNumber):              # added "messenger" + "taskAddition"  [hiddenTasks]
