@@ -8,7 +8,8 @@ def importLog():
     #data_file = 'input-logs/Hospital Billing - Event Log.csv'
     #data_file = 'input-logs/Road_Traffic_Fine_Management_Process.csv'
     #data_file = 'input-logs/Sepsis Cases - Event Log.csv'
-    data_file = 'input-logs/BPI_Challenge_2013_closed_problems.csv'
+    #data_file = 'input-logs/BPI_Challenge_2013_closed_problems.csv'
+    data_file = 'input-logs/test4.csv'
     data = pd.read_csv(data_file, sep=';')
     data2 = data.groupby('Case ID')['Activity'].apply(list).apply(pd.Series).reset_index()
     print('Number of cases in raw log: ', len(data2))
