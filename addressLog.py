@@ -7,11 +7,14 @@ def isNaN(num):
 def importLog():
     #data_file = 'input-logs/Hospital Billing - Event Log.csv'
     #data_file = 'input-logs/Road_Traffic_Fine_Management_Process.csv'
-    #data_file = 'input-logs/Sepsis Cases - Event Log.csv'
+    data_file = 'input-logs/Sepsis Cases - Event Log.csv'
+    #data_file = 'input-logs/BPI_Challenge_2012.csv'
     #data_file = 'input-logs/BPI_Challenge_2013_closed_problems.csv'
-    data_file = 'input-logs/test4.csv'
+    #data_file = 'input-logs/BPI_Challenge_2013_incidents.csv'
+    #data_file = 'input-logs/test4.csv'
     data = pd.read_csv(data_file, sep=';')
     data2 = data.groupby('Case ID')['Activity'].apply(list).apply(pd.Series).reset_index()
+    print('Log name: ', data_file)
     print('Number of cases in raw log: ', len(data2))
     data2.drop('Case ID', axis=1, inplace=True)
     data2.drop_duplicates(keep='first', inplace=True)
@@ -40,7 +43,7 @@ def importLog():
             list4.append(num)
     log = list4
     print('Number of cases in pre-processed log: ', len(list4))
-    return log
+    return log, data_file
 
 def sampleLog(sampledLog, fullLog):
     sublogsize = 10

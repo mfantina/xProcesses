@@ -594,7 +594,7 @@ def calculateCompletenessAndPreciseness(cromossome, completenessAttemptFactor1, 
         precisenessBVB = 1 / len(enabledTasks)
     else:
         precisenessBVB = 1
-    return (completeness, precisenessAKM, precisenessBVB, incorrectlyFiredTasks)
+    return (completeness, precisenessAKM * 100, precisenessBVB * 100, incorrectlyFiredTasks)
 
 def calculateSimplicity(cromossome, alphabet):
     enabledOuputTasks = 0
@@ -710,12 +710,12 @@ def evaluateIndividual(cromossome, referenceCromossome, TPweight, precisenessWei
     temporaryAdaptedCromossome = adaptCromossome(copy.deepcopy(cromossome), alphabet)
     (completeness, precisenessAKM, precisenessBVB, incorrectlyFiredTasks) = calculateCompletenessAndPreciseness(temporaryAdaptedCromossome, completenessAttemptFactor1, completenessAttemptFactor2, log, alphabet)
     if (simplicityWeight > 0):
-        simplicity = calculateSimplicity(cromossome, alphabet)
+        simplicity = calculateSimplicity(cromossome, alphabet) * 100
     if (precisenessWeight == 0):
         precisenessAKM = 0
         precisenessBVB = 0
-    fitnessAKM = ((((completeness * completenessWeight) + (TP * TPweight)) - (precisenessAKM * precisenessWeight) - (simplicity * simplicityWeight)), completeness, TP, precisenessAKM, simplicity, i, incorrectlyFiredTasks)
-    fitnessBVB = ((((completeness * completenessWeight) + (TP * TPweight)) - ((1 - precisenessBVB) * precisenessWeight) - ((1 - simplicity) * simplicityWeight)), completeness, TP, precisenessBVB, simplicity, i, incorrectlyFiredTasks)
+    fitnessAKM = ((((completeness * completenessWeight) + (TP * TPweight)) - (precisenessAKM * precisenessWeight / 100) - (simplicity * simplicityWeight / 100)), completeness, TP, precisenessAKM, simplicity, i, incorrectlyFiredTasks)
+    fitnessBVB = ((((completeness * completenessWeight) + (TP * TPweight)) - ((1 - (precisenessBVB / 100)) * precisenessWeight) - ((1 - (simplicity / 100)) * simplicityWeight)), completeness, TP, precisenessBVB, simplicity, i, incorrectlyFiredTasks)
     return fitnessBVB
 
 def normalizeTotalFitness(evaluationValues):

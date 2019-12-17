@@ -15,10 +15,10 @@ from datetime import datetime
 from functools import partial
 
 numberOfParametersCombinations = 1
-numberOfThreads = 5
+numberOfThreads = 4
 numberOfRounds = 1
 
-def runRound(par, parComb, parCount, numberOfThreads, round, broadcast, messenger, islandSizes, percentageOfBestIndividualsForMigrationAllIslands, taskAddition, sampledLog, fullLog, alphabet, islandNumber):              # added "messenger" + "taskAddition"  [hiddenTasks]
+def runRound(par, parComb, parCount, numberOfThreads, round, broadcast, messenger, islandSizes, percentageOfBestIndividualsForMigrationAllIslands, taskAddition, sampledLog, fullLog, alphabet, logName, islandNumber):              # added "messenger" + "taskAddition"  [hiddenTasks]
     islandStart = datetime.now()
     population_size = int(par[islandNumber + parCount][1])
     numberOfGenerations = int(par[islandNumber + parCount][2])
@@ -161,7 +161,7 @@ def runRound(par, parComb, parCount, numberOfThreads, round, broadcast, messenge
                 evaluatedPopulation = fit.evaluationPopulation(population, referenceCromossome, TPweight, precisenessWeight, simplicityWeight, completenessWeight, completenessAttemptFactor1, completenessAttemptFactor2, selectionOp, alphabet, sampledLog[0], numberOfHiddenTask)
                 (highestValueAndPosition, sortedEvaluatedPopulation) = cycle.chooseHighest(evaluatedPopulation)
         #if (currentGeneration % 10 == 0):
-        record.record_evolution(sampledLog[2], sampledLog[0], str(parComb), str(islandNumber), str(round), par[islandNumber + parCount], islandNumber, highestValueAndPosition[0], fitnessEvolution, alphabet, population[highestValueAndPosition[1]], islandStart, datetime.now(), datetime.now() - islandStart, currentGeneration)
+        record.record_evolution(sampledLog[2], logName, str(parComb), str(islandNumber), str(round), par[islandNumber + parCount], islandNumber, highestValueAndPosition[0], fitnessEvolution, alphabet, population[highestValueAndPosition[1]], islandStart, datetime.now(), datetime.now() - islandStart, currentGeneration)
         ### pst ### if (currentGeneration > 0 and (numberOfGenerations-currentGeneration > 10) and currentGeneration%satime == 0):
             ### pst ### print("ISLAND: ", islandNumber, "currently at Simulated Annealing")
             ### pst ### #Simulated Annealing
@@ -198,7 +198,7 @@ def runRound(par, parComb, parCount, numberOfThreads, round, broadcast, messenge
     plott.close()
     islandEnd = datetime.now()
     islandDuration = islandEnd - islandStart
-    record.record_evolution(sampledLog[2], sampledLog[0], str(parComb), str(islandNumber), str(round), par[islandNumber + parCount], islandNumber, highestValueAndPosition[0], fitnessEvolution, alphabet, population[highestValueAndPosition[1]], islandStart, islandEnd, islandDuration, currentGeneration)
+    record.record_evolution(sampledLog[2], logName, str(parComb), str(islandNumber), str(round), par[islandNumber + parCount], islandNumber, highestValueAndPosition[0], fitnessEvolution, alphabet, population[highestValueAndPosition[1]], islandStart, islandEnd, islandDuration, currentGeneration)
     #pn.createPetriNet(population[highestValueAndPosition[1]], islandNumber, alphabet)
     print('Final results ==>', 'ISL:', islandNumber, '| ISL-DURANTION:', islandDuration, '| TF:', '%.10f' % highestValueAndPosition[0][0], '| C:', '%.10f' % highestValueAndPosition[0][1], '| TP:', '%.10f' % highestValueAndPosition[0][2], '| P:', '%.10f' % highestValueAndPosition[0][3], '| S:', '%.10f' % highestValueAndPosition[0][4], '| ALPHABET:', alphabet, '| BEST INDIVIDUAL:', population[highestValueAndPosition[1]])
     return
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     ### pst ### definitions = [['[8] tasksMutationStartProbability',0.001, 0, 0.1, "float"], ["[10] operatorsMutationStartProbability", 0.01, 0, 1, "float"], ['[32] migrationtime', 1, 1, 50, "int"], ['[34] percentageOfBestIndividualsForMigrationPerIsland', 0.1, 0, 1, "float"], ['[35] percentageOfIndividualsForMigrationPerIsland', 0.1, 0, 1, "float"]]
     globalStart = datetime.now()
     for logID in range(1):
-        fullLog0 = adLog.importLog()
+        fullLog0, logName = adLog.importLog()
         alphabet = []
         logSizeAndMaxTraceSize = [0, float('inf'), 0]
         iniPop.createAlphabet(fullLog0, alphabet)
@@ -252,7 +252,7 @@ if __name__ == '__main__':
                 sampledLog.append(numberOfThreads)
                 sampledLog.append(0)
                 fullLog.append(fullLog0)
-                func2 = partial(func, round, broadcast, messenger, islandSizes, percentageOfBestIndividualsForMigrationAllIslands, taskAddition, sampledLog, fullLog, alphabet)
+                func2 = partial(func, round, broadcast, messenger, islandSizes, percentageOfBestIndividualsForMigrationAllIslands, taskAddition, sampledLog, fullLog, alphabet, logName)
                 ### pst ### func2 = partial(func, round, broadcast, messenger, progressions, definitions, islandSizes, percentageOfBestIndividualsForMigrationAllIslands, taskAddition, sampledLog, fullLog, alphabet)         # New "taskAddition" [hiddenTasks]
                 p.map(func2, num_islands)
                 #plot.plot_evolution_integrated(str(round), numberOfThreads)

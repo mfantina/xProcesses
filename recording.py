@@ -1,6 +1,6 @@
 import csv
 
-def record_evolution(numberOfLogIncrements, log, parComb, par, round, parameters, islandNumber, highestValues, fitnessEvolution, alphabet, bestIndividual, globalStart, islandEnd, islandDuration, currentGeneration):
+def record_evolution(numberOfLogIncrements, logName, parComb, par, round, parameters, islandNumber, highestValues, fitnessEvolution, alphabet, bestIndividual, globalStart, islandEnd, islandDuration, currentGeneration):
 
     parametersString = ''
     parametersValues = ''
@@ -13,7 +13,7 @@ def record_evolution(numberOfLogIncrements, log, parComb, par, round, parameters
         highestValuesValues = highestValuesValues + str(highestValues[i]) + '	'
 
     #fields1 = ['PAR	ROUND	ISL	' + parametersString + 'GEN	START	END	DURANTION	TOT-FIT	COMP	TP	PREC	SIMP	ALPHABET	BEST INDIVIDUAL	LOG	FITNESS EVOLUTION']
-    fields2a = [str(numberOfLogIncrements) + '	' + str(parComb) + '	' + str(par) + '	' + str(round) + '	' + str(islandNumber) + '	' + parametersValues + str(currentGeneration) + '	' + str(globalStart) + '	' + str(islandEnd) + '	' + str(islandDuration) + '	' + highestValuesValues + str(alphabet) + '	' + str(bestIndividual) + '	' + str(log) + '	' + str(fitnessEvolution)]
+    fields2a = [str(numberOfLogIncrements) + '	' + str(parComb) + '	' + str(par) + '	' + str(round) + '	' + str(islandNumber) + '	' + parametersValues + str(currentGeneration) + '	' + str(globalStart) + '	' + str(islandEnd) + '	' + str(islandDuration) + '	' + highestValuesValues + str(alphabet) + '	' + str(bestIndividual) + '	' + logName + '	' + str(fitnessEvolution)]
     fields2b = [str(numberOfLogIncrements) + '	' + str(parComb) + '	' + str(par) + '	' + str(round) + '	' + str(islandNumber) + '	' + parametersValues + str(currentGeneration) + '	' + str(globalStart) + '	' + str(islandEnd) + '	' + str(islandDuration) + '	' + highestValuesValues]
     with open('output-files/output-spreadsheet-complete' + '.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile, dialect='excel', delimiter=',')
